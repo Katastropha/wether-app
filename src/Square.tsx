@@ -1,56 +1,31 @@
-import { ReactElement, useState } from "react";
+import { FC, ReactElement, useRef, useState } from "react";
 
-export const Square = ({ children }): ReactElement => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+export const Square: FC<{ children: ReactElement }> = ({
+  children,
+}): ReactElement => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const movableDivRef = useRef<HTMLDivElement>(null);
 
-  const handleClick = (e) => {
+  const handleMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setPosition({ x: e.clientX, y: e.clientY });
-    console.log(position.x, position.y);
   };
 
+  const topPos = position.y - (movableDivRef.current?.clientHeight ?? 0) / 2;
+  const leftPos = position.x - (movableDivRef.current?.clientWidth ?? 0) / 2;
+
   return (
-    <div className="container" onClick={handleClick}>
+    <div className="container" onMouseMove={handleMove}>
       <div
+        ref={movableDivRef}
         className="square"
         style={{
-          position: "absolute",
-          top: position.y - 50,
-          left: position.x - 50,
-          transition: "all 1s ease-out",
+          transform: `translate(${leftPos}px, ${topPos}px)`,
+          //   top: topPos,
+          //   left: leftPos,
+          transition: "all 1s cubic-bezier(0.1, 2, 0.5, 0.9)",
         }}
       ></div>
       {children}
     </div>
   );
 };
-
-// const Square = (): ReactElement => {
-//     const [position, setPosition] = useState({ x: 0, y: 0 });
-
-//     const handleClick = (e) => {
-//       setPosition({ x: e.clientX, y: e.clientY });
-//       console.log("test", position);
-//     };
-
-//     // return (
-//     //   <div
-//     //     className="follow-element"
-//     //     style={{
-//     //       position: "absolute",
-//     //       top: position.x,
-//     //       left: position.y,
-//     //       transition: "all 1s ease-out",
-//     //     }}
-//     //     onMouseMove={(e) => setPosition({ x: e.clientX, y: e.clientY })}
-//     //   ></div>
-//     // );
-
-//     return (
-//       <div
-//         onClick={handleClick}
-//         className="square"
-//         style={{ position: "absolute", top: position.x, left: position.y }}
-//       ></div>
-//     );
-//   };

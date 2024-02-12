@@ -1,3 +1,4 @@
+import React from "react";
 import { FC, ReactElement, useRef, useState } from "react";
 
 export const Square: FC<{ children: ReactElement }> = ({
@@ -29,3 +30,5 @@ export const Square: FC<{ children: ReactElement }> = ({
     </div>
   );
 };
+
+// export default Square;

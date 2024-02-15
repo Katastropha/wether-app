@@ -1,62 +1,68 @@
 import { weatherCode } from "./weatherCode";
 
-export interface weatherIconI {
+export interface WeatherIconI {
   icon: string[];
-  massage: string;
+  message: string;
 }
 
 const weatherInfo = {
   0: {
     class: "day-clear",
-    massage: "Clear sky",
+    message: "Clear sky",
   },
 
-  1: { class: "partly-cloudy", massage: "Mainly clear" },
-  2: { class: "partly-cloudy", massage: "Partly cloudy" },
-  3: { class: "clouds", massage: "Overcast sky" },
+  1: { class: "partly-cloudy", message: "Mainly clear" },
+  2: { class: "partly-cloudy", message: "Partly cloudy" },
+  3: { class: "clouds", message: "Overcast sky" },
 
-  45: { class: "fog", massage: "Fog" },
-  48: { class: "fog", massage: "Depositing rime fog" },
+  45: { class: "fog", message: "Fog" },
+  48: { class: "fog", message: "Depositing rime fog" },
 
-  51: { class: "day rain", massage: "Light drizzle" },
-  53: { class: "day rain", massage: "Moderate drizzle" },
-  55: { class: "day rain rainwater", massage: "Dense intensity drizzle" },
-  56: { class: "day rain snow", massage: "Light freezing drizzle" },
-  57: { class: "day rain snow", massage: "Dense intensity freezing drizzle" },
+  51: { class: "day rain", message: "Light drizzle" },
+  53: { class: "day rain", message: "Moderate drizzle" },
+  55: { class: "day rain rainwater", message: "Dense intensity drizzle" },
+  56: { class: "day rain snow", message: "Light freezing drizzle" },
+  57: { class: "day rain snow", message: "Dense intensity freezing drizzle" },
 
-  61: { class: "rain rainbow", massage: "Slight rain" },
-  63: { class: "rain", massage: "Moderate rain" },
-  65: { class: "rainwater", massage: "Heavy intensity rai" },
-  66: { class: "rain snow", massage: "Light freezing rain" },
-  67: { class: "rainwater snow", massage: "Heavy intensity freezing rain" },
+  61: { class: "rain rainbow", message: "Slight rain" },
+  63: { class: "rain", message: "Moderate rain" },
+  65: { class: "rainwater", message: "Heavy intensity rai" },
+  66: { class: "rain snow", message: "Light freezing rain" },
+  67: { class: "rainwater snow", message: "Heavy intensity freezing rain" },
 
-  71: { class: "day snow", massage: "Slight snow fall" },
-  73: { class: "snow", massage: "Moderate snow fall" },
-  75: { class: "snow rainwater", massage: "Heavy intensity snow fall" },
+  71: { class: "day snow", message: "Slight snow fall" },
+  73: { class: "snow", message: "Moderate snow fall" },
+  75: { class: "snow rainwater", message: "Heavy intensity snow fall" },
 
-  77: { class: "snow snow-storm", massage: "Snow grains" },
-  80: { class: "rainwater", massage: "Slight rain showers" },
-  81: { class: "rainwater ", massage: "Moderate rain showers" },
-  82: { class: "rainwater storm", massage: "Violent rain showers" },
-  85: { class: "snow storm", massage: "Slight snow showers slight" },
-  86: { class: "snow snow-storm", massage: "Heavy snow showers heavy" },
-  95: { class: "snow-storm", massage: "Slight thunderstorm" },
-  "95 *": { class: "snow-storm storm ", massage: "Moderate thunderstorm" },
-  96: { class: "snow-storm storm", massage: "Thunderstorm with slight hail" },
+  77: { class: "snow snow-storm", message: "Snow grains" },
+  80: { class: "rainwater", message: "Slight rain showers" },
+  81: { class: "rainwater ", message: "Moderate rain showers" },
+  82: { class: "rainwater storm", message: "Violent rain showers" },
+  85: { class: "snow storm", message: "Slight snow showers slight" },
+  86: { class: "snow snow-storm", message: "Heavy snow showers heavy" },
+  95: { class: "snow-storm", message: "Slight thunderstorm" },
+  "95 *": { class: "snow-storm storm ", message: "Moderate thunderstorm" },
+  96: { class: "snow-storm storm", message: "Thunderstorm with slight hail" },
   "99 *": {
     class: "snow-storm rainwater storm",
-    massage: "Hunderstorm with heavy hail",
+    message: "Hunderstorm with heavy hail",
   },
 };
 
+const isKeyofWeatherInfo = (
+  v: string | number
+): v is keyof typeof weatherInfo =>
+  !!weatherInfo[v as keyof typeof weatherInfo];
+
 export const getWeatherIcon = (
-  code: string | number,
+  code: number | string,
   isDay: boolean
-): weatherIconI => {
+): WeatherIconI | undefined => {
   const className = [];
 
-  if (isDay) className.push("day");
-  else className.push("night");
+  if (!isKeyofWeatherInfo(code)) return undefined;
+
+  className.push(isDay ? "day" : "night");
 
   if (code === 0 && isDay) {
     className.push("day-clear");
@@ -68,6 +74,6 @@ export const getWeatherIcon = (
 
   return {
     icon: className,
-    massage: weatherInfo[code].massage,
+    message: weatherInfo[code].message,
   };
 };

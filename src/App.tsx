@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-// import { weatherCode } from "./weatherCode";
 import { getWeatherIcon } from "./getWeatherIcon";
-
-interface weatherDataI {
-  time: string;
-  interval: number;
-  temperature_2m: number;
-  apparent_temperature: number;
-  is_day: boolean;
-  weather_code: number | string;
-}
+import { WeatherDataI } from "./interfaces/WeatherDataI";
 
 const api = "https://api.open-meteo.com/v1/dwd-icon?";
 
@@ -25,50 +16,50 @@ const api = "https://api.open-meteo.com/v1/dwd-icon?";
 // https://api.open-meteo.com/v1/dwd-icon?latitude=52.52&longitude=13.41&current=temperature_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high,wind_gusts_10m&forecast_days=1
 
 function App() {
-  const [position, setPosition] = useState([]);
-  const [isPushed, setIsPushed] = useState(false);
-  const [weather, setWeather] = useState<weatherDataI>();
-  const [icon, setIcon] = useState({});
+  const [position, setPosition] = useState<readonly [number, number]>();
+  const [weather, setWeather] = useState<WeatherDataI>();
+  const [icon, setIcon] = useState<{ icon: string[]; message: string }>();
 
   const handlePosition = () => {
     navigator.geolocation.getCurrentPosition((pos) => {
-      const result: number[] = [pos.coords.latitude, pos.coords.longitude];
+      const result = [pos.coords.latitude, pos.coords.longitude] as const;
       setPosition(result);
-      setIsPushed(true);
     });
   };
 
   useEffect(() => {
-    fetch(
-      `${api}latitude=${position[0]}&longitude=${position[1]}&current=temperature_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high,wind_gusts_10m&forecast_days=1`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setWeather(data.current);
-        setIcon(getWeatherIcon(data.current.weather_code, data.current.is_day));
-        console.log(icon);
-      });
+    if (position) {
+      fetch(
+        `${api}latitude=${position[0]}&longitude=${position[1]}&current=temperature_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m&hourly=cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high,wind_gusts_10m&forecast_days=1`
+      )
+        .then((res) => res.json())
+        .then((data: { current: WeatherDataI }) => {
+          setWeather(data.current);
+          setIcon(
+            getWeatherIcon(data.current.weather_code, data.current.is_day)
+          );
+        });
+    }
   }, [position]);
 
   return (
     <div className="weatherApp">
-      {isPushed ? (
+      {position ? (
         <div className="weather">
           <div className="weather__icons">
-            {icon.icon.map((el: string) => (
+            {icon?.icon.map((el: string) => (
               <div className={`icon ${el}`}></div>
             ))}
           </div>
           <h1 className="weather__temperature">
-            The temperature in your region is {weather?.temperature_2m} °C
+            The temperature in your area is {weather?.temperature_2m} °C
           </h1>
           <p className="weather__apparentTemperature">
-            {icon.massage}. The apparent temperature is{" "}
+            {icon?.message}. The apparent temperature is{" "}
             {weather?.apparent_temperature} °C
           </p>
         </div>
       ) : (
-        // <div className={`${icon}`}></div>
         <h1>To check the weather, press the button</h1>
       )}
       <button className="btn_weather" onClick={handlePosition}>

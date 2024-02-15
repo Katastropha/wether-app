@@ -51,10 +51,14 @@ function App() {
   }, [position]);
 
   return (
-    <div>
+    <div className="weatherApp">
       {isPushed ? (
         <div className="weather">
-          <div className={`icon ${icon.icon}`}></div>
+          <div className="weather__icons">
+            {icon.icon.map((el: string) => (
+              <div className={`icon ${el}`}></div>
+            ))}
+          </div>
           <h1 className="weather__temperature">
             The temperature in your region is {weather?.temperature_2m} °C
           </h1>
@@ -67,7 +71,9 @@ function App() {
         // <div className={`${icon}`}></div>
         <h1>To check the weather, press the button</h1>
       )}
-      <button onClick={handlePosition}>Get Weather</button>
+      <button className="btn_weather" onClick={handlePosition}>
+        Get Weather
+      </button>
     </div>
   );
 }

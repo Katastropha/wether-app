@@ -1,7 +1,7 @@
 import { weatherCode } from "./weatherCode";
 
-export interface waetherIconI {
-  icon: string;
+export interface weatherIconI {
+  icon: string[];
   massage: string;
 }
 
@@ -52,18 +52,18 @@ const weatherInfo = {
 export const getWeatherIcon = (
   code: string | number,
   isDay: boolean
-): waetherIconI => {
-  let className = "";
+): weatherIconI => {
+  const className = [];
 
-  if (isDay) className += "day ";
-  else className += "night ";
+  if (isDay) className.push("day");
+  else className.push("night");
 
   if (code === 0 && isDay) {
-    className += "day-clear";
+    className.push("day-clear");
   } else if (code === 0 && !isDay) {
-    className += "night-clear";
+    className.push("night-clear");
   } else {
-    className += weatherInfo[code].class;
+    className.push(weatherInfo[code].class);
   }
 
   return {

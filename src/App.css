@@ -23,10 +23,33 @@
   /* transition: all 300ms; */
 }
 
+.weatherApp {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 0 0 50px;
+}
+
+.weather__temperature {
+  margin: 10px 0;
+}
+
+.btn_weather {
+  margin: 40px 0;
+  color: darkgrey;
+}
+
+.weather__icons {
+  display: flex;
+  justify-content: center;
+}
+
 .icon {
   width: 100px;
   height: 100px;
-  margin: 0 auto;
 }
 
 .clouds {

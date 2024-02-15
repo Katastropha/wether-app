@@ -22,3 +22,53 @@
   /* transition-timing-function: cubic-bezier(0.5, 0.1, 1.5, 3); */
   /* transition: all 300ms; */
 }
+
+.icon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.clouds {
+  background-image: url("/src/pictures/clouds.png");
+}
+.day-clear {
+  background-image: url("/src/pictures/clear-day.png");
+}
+.night {
+  background-image: url("/src/pictures/clear-night.png");
+}
+.day {
+  background-image: url("/src/pictures/day.png");
+}
+.heat {
+  background-image: url("/src/pictures/heat.png");
+}
+.rain {
+  background-image: url("/src/pictures/rain.png");
+}
+.rainbow {
+  background-image: url("/src/pictures/rainbow.png");
+}
+.snow-storm {
+  background-image: url("/src/pictures/snow-storm.png");
+}
+.snow {
+  background-image: url("/src/pictures/snow.png");
+}
+.storm {
+  background-image: url("/src/pictures/storm.png");
+}
+.windy {
+  background-image: url("/src/pictures/windy.png");
+}
+.partly-cloudy {
+  background-image: url("/src/pictures/partly-cloudy.png");
+}
+
+.fog {
+  background-image: url("/src/pictures/fog.png");
+}
+.rainwater {
+  background-image: url("/src/pictures/rainwater.png");
+}

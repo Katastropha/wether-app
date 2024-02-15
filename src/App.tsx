@@ -18,7 +18,7 @@ const api = "https://api.open-meteo.com/v1/dwd-icon?";
 function App() {
   const [position, setPosition] = useState<readonly [number, number]>();
   const [weather, setWeather] = useState<WeatherDataI>();
-  const [icon, setIcon] = useState<{ icon: string[]; message: string }>();
+  const [iconObj, setIconObj] = useState<{ icon: string[]; message: string }>();
 
   const handlePosition = () => {
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -35,7 +35,7 @@ function App() {
         .then((res) => res.json())
         .then((data: { current: WeatherDataI }) => {
           setWeather(data.current);
-          setIcon(
+          setIconObj(
             getWeatherIcon(data.current.weather_code, data.current.is_day)
           );
         });
@@ -47,7 +47,7 @@ function App() {
       {position ? (
         <div className="weather">
           <div className="weather__icons">
-            {icon?.icon.map((el: string) => (
+            {iconObj?.icon.map((el: string) => (
               <div className={`icon ${el}`}></div>
             ))}
           </div>
@@ -55,7 +55,7 @@ function App() {
             The temperature in your area is {weather?.temperature_2m} °C
           </h1>
           <p className="weather__apparentTemperature">
-            {icon?.message}. The apparent temperature is{" "}
+            {iconObj?.message}. The apparent temperature is{" "}
             {weather?.apparent_temperature} °C
           </p>
         </div>

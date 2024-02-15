@@ -1,5 +1,3 @@
-import { weatherCode } from "./weatherCode";
-
 export interface WeatherIconI {
   icon: string[];
   message: string;

@@ -4,6 +4,8 @@
 
 ## To start the App:
 
+git
+
 ```
 npm run dev
 ```
